@@ -23,8 +23,6 @@ set -- \
 "com.android.printspooler" \
 "com.android.statementservice" \
 "com.android.stk" \
-"com.android.thememanager" \
-"com.android.thememanager.module" \
 "com.android.wallpaper.livepicker" \
 "com.android.wallpaperbackup" \
 "com.android.wallpapercropper" \
