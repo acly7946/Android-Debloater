@@ -2,5 +2,3 @@
 * step 0: have shell and adb working
 * step 1: mark as executable
 * step 2: run
-
-edit: this stops updates working. whooooooooops
