@@ -174,12 +174,18 @@ set -- \
 "com.hampusolsson.abstruct" \
 "code.name.monkey.retromusic"
 
-for PACKAGE; do
-	printf "$(tput setaf 4)Uninstalled $(tput sgr0)${PACKAGE}"
-	ERROR=$(adb shell pm uninstall -k --user 0 ${PACKAGE} 2>&1)
-	if [ $? -ne 0 ]; then
-		echo "\r$(tput setaf 1)FAILED $(tput sgr0)${PACKAGE} $(tput setaf 3)${ERROR}"
+uninstall()
+{
+	ERROR=$(adb shell pm uninstall -k --user 0 $1 2>&1)
+	if [ $? != 0 ]; then
+		echo "\r$(tput setaf 1)FAILED $(tput sgr0)$1 $(tput setaf 3)${ERROR}"
 	else
-		printf "\n"
+		echo "\r$(tput setaf 2)SUCCESS $(tput sgr0)$1"
 	fi
+}
+
+printf "Uninstalling..."
+for PACKAGE; do
+	uninstall ${PACKAGE} &
 done
+wait
