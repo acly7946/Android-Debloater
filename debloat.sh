@@ -184,6 +184,7 @@ uninstall()
 	fi
 }
 
+adb start-server # initialise adb first
 printf "Uninstalling..."
 for PACKAGE; do
 	uninstall ${PACKAGE} &
