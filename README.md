@@ -2,7 +2,7 @@
 
 ## Requirements:
 
-* A Shell.
+* A Shell
 * ADB
 
 ## Usage
@@ -31,4 +31,3 @@ To rebloat:
 ln -sf debloat.sh rebloat.sh
 rebloat.sh <INPUTFILE> <INPUTFILE2>
 ```
-
