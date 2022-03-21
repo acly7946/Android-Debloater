@@ -1,8 +1,6 @@
 #! /bin/sh
 #
-# Debloater for Redmi 8A global ROM
-#
-# credit to https://selivan.github.io/2020/02/25/removing-bloatware-from-xiaomi-miui-android.html
+# Generic android batch package remover
 
 install()
 {
