@@ -27,15 +27,22 @@ uninstall()
 BASENAME=$(basename "${0}")
 
 adb start-server # initialise adb first
+if [ "$#" = 0 ]; then
+	echo "Usage: ${0} <INPUTFILE> <INPUTFILE2>"
+	exit 1
+fi
 if [ "${BASENAME}" = "debloat.sh" ]; then
-	printf "Uninstalling..."
+	echo "Uninstalling..."
 	while IFS= read -r PACKAGE; do
 		uninstall "${PACKAGE}" &
 	done < "$@"
 elif [ "${BASENAME}" = "rebloat.sh" ]; then
-	printf "Reinstalling..."
+	echo "Reinstalling..."
 	while IFS= read -r PACKAGE; do
 		install "${PACKAGE}" &
 	done < "$@"
+else
+	echo "File must be called 'debloat.sh' or 'rebloat.sh'"
+	exit 1
 fi
 wait
