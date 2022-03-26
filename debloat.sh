@@ -17,7 +17,7 @@ install()
 		fi
 
 		# Get common name
-		NAME=$(adb shell /data/local/tmp/aapt-arm-pie d badging "${APKPATH}" 2>&1 | grep "application-label:" | cut -f 2 -d ":")
+		NAME=$(adb shell /data/local/tmp/aapt-arm-pie d badging "${APKPATH}" 2>&1 | grep "application-label:" | cut -f 2 -d ":" | tr -d \')
 		if [ -z "${NAME}" ]; then # Set to package name if no common name
 			NAME="${1}"
 			return
@@ -35,7 +35,7 @@ uninstall()
 	fi
 
 	# Get common name
-	NAME=$(adb shell /data/local/tmp/aapt-arm-pie d badging "${APKPATH}" 2>&1 | grep "application-label:" | cut -f 2 -d ":")
+	NAME=$(adb shell /data/local/tmp/aapt-arm-pie d badging "${APKPATH}" 2>&1 | grep "application-label:" | cut -f 2 -d ":" | tr -d \')
 	if [ -z "${NAME}" ]; then # Set to package name if no common name
 		NAME="${1}"
 		return
