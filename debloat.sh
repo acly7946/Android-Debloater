@@ -59,7 +59,10 @@ uninstall()
 }
 
 BASENAME=$(basename "${0}")
-adb start-server # initialise adb first
+adb start-server
+if ! adb devices | grep -m 1 "[0-9]" ; then
+	exit 1
+fi
 adb push aapt-arm-pie /data/local/tmp >/dev/null
 adb shell chmod 0755 /data/local/tmp/aapt-arm-pie
 
@@ -68,6 +71,7 @@ if [ "$#" = 0 ]; then
 	echo "Usage: ${0} <INPUTFILE> <INPUTFILE2>"
 	exit 1
 fi
+
 
 # Generate cache if not present
 if [ ! -e "${CACHE}" ]; then
