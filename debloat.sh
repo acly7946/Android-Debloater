@@ -60,7 +60,7 @@ uninstall()
 
 BASENAME=$(basename "${0}")
 adb start-server
-if ! adb devices | grep -m 1 "[0-9]" ; then
+if ! adb devices | grep -m 1 "[0-9]" >/dev/null; then
 	exit 1
 fi
 adb push aapt-arm-pie /data/local/tmp >/dev/null
@@ -74,6 +74,7 @@ fi
 
 # Generate cache if not present
 if [ ! -e "${CACHE}" ]; then
+	echo "Generating cache..."
 	gen_cache
 fi
 
