@@ -18,7 +18,7 @@ ln -sf debloat.sh rebloat.sh
 rebloat.sh <INPUTFILE> <INPUTFILE2>
 ```
 
-Output:
+## Output:
 
 If possible, the human readable/common name of a package will be shown. If not possible, then the package name itself will be shown.
 
