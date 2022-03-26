@@ -30,7 +30,7 @@ SKIPPED com.opera.branding
 FAILED Gmail cmd: Failure calling service package: Broken pipe (32)
 ```
 
-| Meaning |  |
+| Output | Description |
 |---|---|
 | SUCCESS | The package was successfully processed |
 | SKIPPED | The package was ignored as it has already been processed/does not exist |
