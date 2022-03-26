@@ -39,7 +39,7 @@ uninstall()
 		printf "\r%sSKIPPED %s${1} \n" "$(tput setaf 4)" "$(tput sgr0)"
 		return
 	else
-		APKPATH=$(echo "${CACHED_DATA}" | cut -c 9- | sed "s/\.apk=.*/.apk/")
+		APKPATH=$(echo "${CACHED_DATA}" | sed "s/\.apk=.*/.apk/")
 	fi
 
 	# Get common name
