@@ -17,18 +17,17 @@ install()
 		return
 	fi
 
-	# Get common name
-	APKPATH=$(adb shell pm path "${1}" 2>&1 | cut -f 2 -d ":")
-	NAME=$(adb shell /data/local/tmp/aapt-arm-pie d badging "${APKPATH}" 2>&1 | grep "application-label:" | cut -f 2 -d ":" | tr -d \')
-	if [ -z "${NAME}" ]; then # Set to package name if no common name
-		NAME="${1}"
-	fi
-
 	ERROR=$(adb shell cmd package install-existing "${1}" 2>&1)
 	RETURN=$?
 	if [ ${RETURN} != 0 ]; then
 		printf "\r%sFAILURE %s${NAME} %s${ERROR}\n" "$(tput setaf 1)" "$(tput sgr0)" "$(tput setaf 3)"
 	else
+		# Get common name
+		APKPATH=$(adb shell pm path "${1}" 2>&1 | cut -f 2 -d ":")
+		NAME=$(adb shell /data/local/tmp/aapt-arm-pie d badging "${APKPATH}" 2>&1 | grep "application-label:" | cut -f 2 -d ":" | tr -d \')
+		if [ -z "${NAME}" ]; then # Set to package name if no common name
+			NAME="${1}"
+		fi
 		printf "\r%sSUCCESS %s${NAME}\n" "$(tput setaf 2)" "$(tput sgr0)"
 	fi
 }
