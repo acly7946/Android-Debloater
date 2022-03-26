@@ -4,7 +4,6 @@
 
 install()
 {
-
 	ERROR=$(adb shell cmd package install-existing "${1}" 2>&1)
 	RETURN=$?
 	if [ ${RETURN} != 0 ]; then
