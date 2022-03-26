@@ -27,7 +27,7 @@ install()
 	ERROR=$(adb shell cmd package install-existing "${1}" 2>&1)
 	RETURN=$?
 	if [ ${RETURN} != 0 ]; then
-		printf "\r%sFAILURE %s${1} %s${ERROR}\n" "$(tput setaf 1)" "$(tput sgr0)" "$(tput setaf 3)"
+		printf "\r%sFAILURE %s${NAME} %s${ERROR}\n" "$(tput setaf 1)" "$(tput sgr0)" "$(tput setaf 3)"
 	else
 		printf "\r%sSUCCESS %s${NAME}\n" "$(tput setaf 2)" "$(tput sgr0)"
 	fi
