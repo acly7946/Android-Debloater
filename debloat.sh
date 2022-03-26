@@ -68,7 +68,7 @@ adb shell chmod 0755 /data/local/tmp/aapt-arm-pie
 
 # Check if files were specified
 if [ "$#" = 0 ]; then
-	echo "Usage: ${0} <INPUTFILE> <INPUTFILE2>"
+	echo "error: specify file as package list"
 	exit 1
 fi
 
@@ -90,7 +90,7 @@ elif [ "${BASENAME}" = "rebloat.sh" ]; then
 		install "${PACKAGE}" &
 	done < "$@"
 else
-	echo "File must be called 'debloat.sh' or 'rebloat.sh'"
+	echo "error: executable must be called 'debloat.sh' or 'rebloat.sh'"
 	exit 1
 fi
 
