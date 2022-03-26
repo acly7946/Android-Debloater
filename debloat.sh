@@ -72,7 +72,6 @@ if [ "$#" = 0 ]; then
 	exit 1
 fi
 
-
 # Generate cache if not present
 if [ ! -e "${CACHE}" ]; then
 	gen_cache
