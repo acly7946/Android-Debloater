@@ -60,7 +60,7 @@ uninstall()
 	NAME=$(grep "${1}" "${NAME_CACHE}" | cut -f 2 -d ":")
 	if [ -z "${NAME}" ]; then
 		# Get common name
-		NAME=$(adb shell /data/local/tmp/aapt-arm-pie d badging "${APKPATH}" 2>&1 | grep "application-label:" | cut -f 2 -d ":" | tr -d \')
+		NAME=$(adb shell /data/local/tmp/aapt-arm-pie d badging "${APKPATH}" 2>&1 | grep "application-label:" | cut -f 2 -d ":" | tr -d \'\\r)
 		if [ "${NAME}" ]; then
 			echo "${1}:${NAME}" >> "${NAME_CACHE}" # Append to cache
 		else
