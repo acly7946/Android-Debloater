@@ -27,7 +27,7 @@ install()
 	if [ ${RETURN} != 0 ]; then
 		printf "\r%sFAILURE %s${NAME} %s${ERROR}\n" "$(tput setaf 1)" "$(tput sgr0)" "$(tput setaf 3)"
 	else
-		NAME=$(grep "${1}" "${NAME_CACHE}" | cut -f 2 -d ":")
+		NAME=$(grep "${1}": "${NAME_CACHE}" | cut -f 2 -d ":")
 		if [ -z "${NAME}" ]; then
 			# Get common name
 			APKPATH=$(adb shell pm path "${1}" 2>&1 | cut -f 2 -d ":")
@@ -57,7 +57,7 @@ uninstall()
 	fi
 
 	# Get common name
-	NAME=$(grep "${1}" "${NAME_CACHE}" | cut -f 2 -d ":")
+	NAME=$(grep "${1}": "${NAME_CACHE}" | cut -f 2 -d ":")
 	if [ -z "${NAME}" ]; then
 		# Get common name
 		NAME=$(adb shell /data/local/tmp/aapt-arm-pie d badging "${APKPATH}" 2>&1 | grep "application-label:" | cut -f 2 -d ":" | tr -d \'\\r)
