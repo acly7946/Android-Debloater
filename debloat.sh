@@ -14,7 +14,11 @@ gen_cache()
 install()
 {
 	if ! grep -q "${1}" "${PKG_CACHE}"; then
-		printf "\r%sSKIPPED %s${1} \n" "$(tput setaf 4)" "$(tput sgr0)"
+		NAME=$(grep "${1}" "${NAME_CACHE}" | cut -f 2 -d ":")
+		if [ -z "${NAME}" ]; then
+			NAME="${1}" # Set to package name if not cached
+		fi
+		printf "\r%sSKIPPED %s${NAME} \n" "$(tput setaf 4)" "$(tput sgr0)"
 		return
 	fi
 
@@ -42,7 +46,11 @@ uninstall()
 {
 	CACHED_DATA=$(grep "${1}" "${PKG_CACHE}" | grep ".apk")
 	if [ -z "${CACHED_DATA}" ]; then
-		printf "\r%sSKIPPED %s${1} \n" "$(tput setaf 4)" "$(tput sgr0)"
+		NAME=$(grep "${1}" "${NAME_CACHE}" | cut -f 2 -d ":")
+		if [ -z "${NAME}" ]; then
+			NAME="${1}" # Set to package name if not cached
+		fi
+		printf "\r%sSKIPPED %s${NAME} \n" "$(tput setaf 4)" "$(tput sgr0)"
 		return
 	else
 		APKPATH=$(echo "${CACHED_DATA}" | sed "s/\.apk=.*/.apk/")
