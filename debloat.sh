@@ -2,17 +2,18 @@
 #
 # Generic android batch package remover
 
-CACHE="${XDG_CACHE_HOME}"/Android-Debloater/"$(adb get-serialno)"
+PKG_CACHE="${XDG_CACHE_HOME}"/Android-Debloater/"$(adb get-serialno)"
+NAME_CACHE="${XDG_CACHE_HOME}"/Android-Debloater/common_name
 
 gen_cache()
 {
 	mkdir -p "${XDG_CACHE_HOME}"/Android-Debloater
-	adb shell pm list packages -f -u | cut -f 2 -d ':' > "${CACHE}"
+	adb shell pm list packages -f -u | cut -f 2 -d ':' > "${PKG_CACHE}"
 }
 
 install()
 {
-	if ! grep -q "${1}" "${CACHE}"; then
+	if ! grep -q "${1}" "${PKG_CACHE}"; then
 		printf "\r%sSKIPPED %s${1} \n" "$(tput setaf 4)" "$(tput sgr0)"
 		return
 	fi
@@ -22,11 +23,16 @@ install()
 	if [ ${RETURN} != 0 ]; then
 		printf "\r%sFAILURE %s${NAME} %s${ERROR}\n" "$(tput setaf 1)" "$(tput sgr0)" "$(tput setaf 3)"
 	else
-		# Get common name
-		APKPATH=$(adb shell pm path "${1}" 2>&1 | cut -f 2 -d ":")
-		NAME=$(adb shell /data/local/tmp/aapt-arm-pie d badging "${APKPATH}" 2>&1 | grep "application-label:" | cut -f 2 -d ":" | tr -d \')
-		if [ -z "${NAME}" ]; then # Set to package name if no common name
-			NAME="${1}"
+		NAME=$(grep "${1}" "${NAME_CACHE}" | cut -f 2 -d ":")
+		if [ -z "${NAME}" ]; then
+			# Get common name
+			APKPATH=$(adb shell pm path "${1}" 2>&1 | cut -f 2 -d ":")
+			NAME=$(adb shell /data/local/tmp/aapt-arm-pie d badging "${APKPATH}" 2>&1 | grep "application-label:" | cut -f 2 -d ":" | tr -d \')
+			if [ "${NAME}" ]; then
+				echo "${1}:${NAME}" >> "${NAME_CACHE}" # Append to cache
+			else
+				NAME="${1}" # Set to package name if no common name
+			fi
 		fi
 		printf "\r%sSUCCESS %s${NAME}\n" "$(tput setaf 2)" "$(tput sgr0)"
 	fi
@@ -34,7 +40,7 @@ install()
 
 uninstall()
 {
-	CACHED_DATA=$(grep "${1}" "${CACHE}" | grep ".apk")
+	CACHED_DATA=$(grep "${1}" "${PKG_CACHE}" | grep ".apk")
 	if [ -z "${CACHED_DATA}" ]; then
 		printf "\r%sSKIPPED %s${1} \n" "$(tput setaf 4)" "$(tput sgr0)"
 		return
@@ -43,9 +49,15 @@ uninstall()
 	fi
 
 	# Get common name
-	NAME=$(adb shell /data/local/tmp/aapt-arm-pie d badging "${APKPATH}" 2>&1 | grep "application-label:" | cut -f 2 -d ":" | tr -d \')
-	if [ -z "${NAME}" ]; then # Set to package name if no common name
-		NAME="${1}"
+	NAME=$(grep "${1}" "${NAME_CACHE}" | cut -f 2 -d ":")
+	if [ -z "${NAME}" ]; then
+		# Get common name
+		NAME=$(adb shell /data/local/tmp/aapt-arm-pie d badging "${APKPATH}" 2>&1 | grep "application-label:" | cut -f 2 -d ":" | tr -d \')
+		if [ "${NAME}" ]; then
+			echo "${1}:${NAME}" >> "${NAME_CACHE}" # Append to cache
+		else
+			NAME="${1}" # Set to package name if no common name
+		fi
 	fi
 
 	ERROR=$(adb shell pm uninstall -k --user 0 "${1}" 2>&1)
@@ -72,9 +84,12 @@ if [ "$#" = 0 ]; then
 fi
 
 # Generate cache if not present
-if [ ! -e "${CACHE}" ]; then
+if [ ! -e "${PKG_CACHE}" ]; then
 	echo "Generating cache..."
 	gen_cache
+fi
+if [ ! -e "${NAME_CACHE}" ]; then
+	touch "${NAME_CACHE}"
 fi
 
 # Either debloat or rebloat or fail
