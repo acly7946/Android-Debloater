@@ -7,7 +7,7 @@ CACHE="${XDG_CACHE_HOME}"/Android-Debloater/"$(adb get-serialno)"
 gen_cache()
 {
 	mkdir -p "${XDG_CACHE_HOME}"/Android-Debloater
-	adb shell pm list packages -f -u | cut -f 2 -d ':' > "${XDG_CACHE_HOME}"/Android-Debloater/"$(adb get-serialno)"
+	adb shell pm list packages -f -u | cut -f 2 -d ':' > "${CACHE}"
 }
 
 install()
