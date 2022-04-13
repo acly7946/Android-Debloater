@@ -25,21 +25,22 @@ install()
 		APKPATH=$(echo "${CACHED_DATA}" | sed "s/\.apk=.*/.apk/")
 	fi
 
+	# Get common name
+	NAME=$(grep "${1}": "${NAME_CACHE}" | cut -f 2 -d ":")
+	if [ -z "${NAME}" ]; then
+		NAME=$(adb shell /data/local/tmp/aapt-arm-pie d badging "${APKPATH}" 2>&1 | grep "application-label:" | cut -f 2 -d ":" | tr -d \')
+		if [ "${NAME}" ]; then
+			echo "${1}:${NAME}" >> "${NAME_CACHE}" # Append to cache
+		else
+			NAME="${1}" # Set to package name if no common name
+		fi
+	fi
+
 	ERROR=$(adb shell cmd package install-existing "${1}" 2>&1)
 	RETURN=$?
 	if [ ${RETURN} != 0 ]; then
 		printf "\r%sFAILURE %s${NAME} %s${ERROR}\n" "$(tput setaf 1)" "$(tput sgr0)" "$(tput setaf 3)"
 	else
-		# Get common name
-		NAME=$(grep "${1}": "${NAME_CACHE}" | cut -f 2 -d ":")
-		if [ -z "${NAME}" ]; then
-			NAME=$(adb shell /data/local/tmp/aapt-arm-pie d badging "${APKPATH}" 2>&1 | grep "application-label:" | cut -f 2 -d ":" | tr -d \')
-			if [ "${NAME}" ]; then
-				echo "${1}:${NAME}" >> "${NAME_CACHE}" # Append to cache
-			else
-				NAME="${1}" # Set to package name if no common name
-			fi
-		fi
 		printf "\r%sSUCCESS %s${NAME}\n" "$(tput setaf 2)" "$(tput sgr0)"
 	fi
 }
