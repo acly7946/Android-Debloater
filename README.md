@@ -49,3 +49,6 @@ com.android.cellbroadcastreceiver
 com.android.cellbroadcastreceiver.overlay.common
 com.android.chrome
 ```
+
+## Notes
+aapt binary comes from here: https://github.com/Calsign/APDE/blob/fdc22eb31048862e1484f4b6eca229accda61466/APDE/src/main/assets/aapt-binaries/aapt-arm-pie
