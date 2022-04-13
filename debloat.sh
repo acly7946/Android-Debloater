@@ -13,13 +13,16 @@ gen_cache()
 
 install()
 {
-	if ! grep -q "${1}" "${PKG_CACHE}"; then
+	CACHED_DATA=$(grep "${1}" "${PKG_CACHE}" | grep ".apk")
+	if [ -z "${CACHED_DATA}" ]; then
 		NAME=$(grep "${1}" "${NAME_CACHE}" | cut -f 2 -d ":")
 		if [ -z "${NAME}" ]; then
 			NAME="${1}" # Set to package name if not cached
 		fi
 		printf "\r%sSKIPPED %s${NAME} \n" "$(tput setaf 4)" "$(tput sgr0)"
 		return
+	else
+		APKPATH=$(echo "${CACHED_DATA}" | sed "s/\.apk=.*/.apk/")
 	fi
 
 	ERROR=$(adb shell cmd package install-existing "${1}" 2>&1)
@@ -30,7 +33,6 @@ install()
 		# Get common name
 		NAME=$(grep "${1}": "${NAME_CACHE}" | cut -f 2 -d ":")
 		if [ -z "${NAME}" ]; then
-			APKPATH=$(adb shell pm path "${1}" 2>&1 | cut -f 2 -d ":")
 			NAME=$(adb shell /data/local/tmp/aapt-arm-pie d badging "${APKPATH}" 2>&1 | grep "application-label:" | cut -f 2 -d ":" | tr -d \')
 			if [ "${NAME}" ]; then
 				echo "${1}:${NAME}" >> "${NAME_CACHE}" # Append to cache
