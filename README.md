@@ -24,11 +24,7 @@ If possible, the human readable/common name of a package will be shown. If not p
 
 Example Output:
 
-```
-SUCCESS Google Text-to-speech Engine
-SKIPPED com.opera.branding
-FAILED Gmail cmd: Failure calling service package: Broken pipe (32)
-```
+![Unsaved Image 1 resized](https://user-images.githubusercontent.com/66972514/167492490-6aae2335-408c-4877-a611-a08ea047cc14.png)
 
 | Output | Description |
 |---|---|
