@@ -8,12 +8,12 @@
 ## Usage
 
 To debloat:
-``` sh
+```
 ./debloat.sh <INPUTFILE> <INPUTFILE2>
 ```
 
 To rebloat:
-``` sh
+```
 ln -sf debloat.sh rebloat.sh
 ./rebloat.sh <INPUTFILE> <INPUTFILE2>
 ```
