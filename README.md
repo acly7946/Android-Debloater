@@ -30,7 +30,7 @@ Example Output:
 |---|---|
 | SUCCESS | The package was successfully processed |
 | SKIPPED | The package was ignored as it has already been processed/does not exist |
-| FAILED | An error has occured and and is shown on the same line|
+| FAILURE | An error has occured and and is shown on the same line|
 
 ## Input Files
 
