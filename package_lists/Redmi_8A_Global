@@ -10,6 +10,7 @@ com.facebook.katana
 com.facebook.services
 com.facebook.system
 com.google.android.apps.maps
+com.google.android.apps.wellbeing
 com.google.android.contacts
 com.google.android.googlequicksearchbox
 com.google.android.youtube
